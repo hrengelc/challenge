@@ -1,0 +1,26 @@
+# Use the official Python image from the Docker Hub
+FROM python:3.9-slim
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the requirements file
+COPY requirements.txt .
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application code
+COPY . .
+
+# Copy the .env file
+COPY .env .env
+
+# Install the dotenv package to handle environment variables
+RUN pip install python-dotenv
+
+# Set environment variables
+ENV DB_CONNECTION_STRING=${DB_CONNECTION_STRING}
+
+# Command to run the application
+CMD ["python", "gdelt_data_processor.py"]
